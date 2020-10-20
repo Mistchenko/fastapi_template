@@ -1,0 +1,37 @@
+version: 1
+disable_existing_loggers: False
+root:
+  level: DEBUG
+  handlers: [error]
+
+loggers:
+  gunicorn.error:
+    handlers: [error]
+    propagate: False
+    qualname: gunicorn.error
+  gunicorn.access:
+    handlers: [access]
+    propagate: False
+    qualname: gunicorn.error
+  uvicorn.access:
+    handlers: [access]
+    propagate: False
+    qualname: uvicorn.error
+
+handlers:
+  error:
+    class: logging.FileHandler
+    filename: _error.log
+    formatter: error
+  access:
+    class: logging.FileHandler
+    filename: _access.log
+    formatter: access
+
+formatters:
+  error:
+    class: logger.formatter.LogFormatter
+    format: ERR %(asctime)s %(name)s %(levelname)-4s %(message)s <<%(unique_id)s>>
+  access:
+    class: logger.formatter.LogFormatter
+    format: ACC %(asctime)s %(name)s %(levelname)-4s %(message)s <<%(unique_id)s>>
